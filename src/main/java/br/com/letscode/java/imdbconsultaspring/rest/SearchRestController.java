@@ -34,7 +34,7 @@ public class SearchRestController {
 
     //não está funcionado
     @GetMapping("/movies/{id}")
-    public ResultID searchId(@RequestParam @PathVariable String id) {
+    public ResultID searchId(@PathVariable String id) {
         try {
             return this.restRepository.searchId(id);
         } catch (MovieNotFound e) {
