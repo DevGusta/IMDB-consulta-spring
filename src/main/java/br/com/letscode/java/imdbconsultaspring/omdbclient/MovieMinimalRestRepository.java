@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "movieMinimalRest", url = "${omdb.url}")
 public interface MovieMinimalRestRepository {
     @GetMapping
-    ResultSearch search(@RequestParam("s")String title);
+    ResultSearch search(@RequestParam("s") String title);
 
     @GetMapping
-    ResultID searchId(@RequestParam("i")String id);
+    ResultID searchId(@RequestParam("i") String id);
 
 }

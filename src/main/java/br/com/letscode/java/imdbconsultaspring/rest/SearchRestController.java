@@ -1,7 +1,8 @@
 package br.com.letscode.java.imdbconsultaspring.rest;
 
-import br.com.letscode.java.imdbconsultaspring.archivecsv.ControlCache;
+import br.com.letscode.java.imdbconsultaspring.archivecsv.Cache;
 import br.com.letscode.java.imdbconsultaspring.omdbclient.MovieMinimalRestRepository;
+import br.com.letscode.java.imdbconsultaspring.omdbclient.MovieNotFound;
 import br.com.letscode.java.imdbconsultaspring.omdbclient.ResultID;
 import br.com.letscode.java.imdbconsultaspring.omdbclient.ResultSearch;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,26 +16,30 @@ import java.net.URISyntaxException;
 @RestController
 public class SearchRestController {
     private final MovieMinimalRestRepository restRepository;
-    private final MovieIDRestRepository idRestRepository;
 
-    public SearchRestController(MovieMinimalRestRepository restRepository, MovieIDRestRepository idRestRepository){
+    public SearchRestController(MovieMinimalRestRepository restRepository) {
         this.restRepository = restRepository;
-        this.idRestRepository = idRestRepository;
     }
 
     @GetMapping("/search")
     public ResultSearch search(@RequestParam String title) throws URISyntaxException, IOException {
-        ControlCache cache = new ControlCache();
+        Cache cache = new Cache();
 
-        if (cache.getMovies(title).getResultList().size() != 0){
-                return  cache.getMovies(title);
+        if (cache.getMovies(title).getResultList().size() != 0) {
+            return cache.getMovies(title);
         }
         cache.writeLine(this.restRepository.search(title));
         return this.restRepository.search(title);
     }
 
+    //não está funcionado
     @GetMapping("/movies/{id}")
-    public ResultID searchId(@RequestParam@PathVariable String id){
-        return this.restRepository.searchId(id);
+    public ResultID searchId(@RequestParam @PathVariable String id) {
+        try {
+            return this.restRepository.searchId(id);
+        } catch (MovieNotFound e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

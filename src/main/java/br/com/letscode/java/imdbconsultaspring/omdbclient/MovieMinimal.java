@@ -5,9 +5,6 @@ import lombok.*;
 
 import java.util.Arrays;
 
-import static java.lang.Double.parseDouble;
-import static java.lang.Integer.parseInt;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -22,6 +19,14 @@ public class MovieMinimal {
     private String title;
     private Integer year;
 
+    public static MovieMinimal fromLine(String[] line) {
+        return new MovieMinimal(
+                line[0],
+                line[1],
+                Integer.parseInt(line[2])
+        );
+    }
+
     @JsonProperty("Year")
     public void setYear(String year) {
         this.year = convertYear(year);
@@ -35,13 +40,5 @@ public class MovieMinimal {
                 .map(Integer::parseInt)
                 .findFirst()
                 .orElseThrow();
-    }
-
-    public static MovieMinimal fromLine(String[] line) {
-        return new MovieMinimal(
-                line[0],
-                line[1],
-                Integer.parseInt(line[2])
-        );
     }
 }
