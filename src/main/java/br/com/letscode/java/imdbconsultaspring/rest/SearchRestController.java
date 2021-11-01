@@ -5,6 +5,7 @@ import br.com.letscode.java.imdbconsultaspring.omdbclient.MovieMinimalRestReposi
 import br.com.letscode.java.imdbconsultaspring.omdbclient.MovieNotFound;
 import br.com.letscode.java.imdbconsultaspring.omdbclient.ResultID;
 import br.com.letscode.java.imdbconsultaspring.omdbclient.ResultSearch;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,11 +36,7 @@ public class SearchRestController {
     //não está funcionado
     @GetMapping("/movies/{id}")
     public ResultID searchId(@PathVariable String id) {
-        try {
-            return this.restRepository.searchId(id);
-        } catch (MovieNotFound e) {
-            e.printStackTrace();
-            return null;
-        }
+
+        return this.restRepository.searchId(id);
     }
 }
